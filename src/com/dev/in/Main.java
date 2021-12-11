@@ -1,17 +1,15 @@
 package com.dev.in;
 
-import com.google.common.hash.Hashing;
-import com.google.gson.JsonObject;
+import com.dev.in.data.Block;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.util.Scanner;
 
 public class Main {
@@ -54,14 +52,21 @@ public class Main {
                         if(block1 == null){
                             System.out.println("Initialize the genesis block before continuing\n");
                         }else{
-                            System.out.println("Sender: "+block1.data.get("sender")+"\nReceiver: "+block1.data.get("receiver")+"\nAmount: "+block1.data.get("amount")+"\nPreviousHash: "+block1.previousHash);
+                            JSONObject data = block1.getData();
+                            System.out.println("Sender: "+data.get("sender")+"\nReceiver: "+data.get("receiver")+"\nAmount: "+data.get("amount")+"\nPreviousHash: "+block1.getPreviousHash());
                         }
                         break;
                     case 4:
                         System.exit(0);
+                    case 5:
+                        System.out.println("Enter a password for your account: ");
+                        String password = br.readLine();
+                        //PrivateKey privateKey = blockchain.generatePrivateKey();
+                        System.out.println(blockchain.generateKey(password));
+                        break;
                 }
             }
-        } catch (NoSuchAlgorithmException | IOException | JSONException | InterruptedException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
